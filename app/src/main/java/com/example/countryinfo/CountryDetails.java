@@ -101,11 +101,7 @@ public class CountryDetails extends AppCompatActivity {
                                     countryFound = true;
                                 }
                             } else if (keyName.equals("alpha2Code")) {
-                                String countryCode = jsonReader.nextString();
-                                countryInfo.setAlpha2Code(countryCode);
-                                String flagUrl = "https://www.countryflags.io/" + countryCode + "/flat/64.png";
-                                new GetFlag().execute(flagUrl);
-
+                                countryInfo.setAlpha2Code(jsonReader.nextString());
                             }else if (keyName.equals("capital")) {
                                 countryInfo.setCapital(jsonReader.nextString());
                             }else if (keyName.equals("population")) {
@@ -126,12 +122,15 @@ public class CountryDetails extends AppCompatActivity {
             } catch (Exception e) {
                 Log.i("INFO", "Error: " + e.toString());
             }
+
             return countryInfo;
         }
 
         @Override
         protected void onPostExecute(CountryInfo countryInfo) {
             super.onPostExecute(countryInfo);
+            String flagUrl = "https://www.countryflags.io/" + countryInfo.getAlpha2Code() + "/flat/64.png";
+            new GetFlag().execute(flagUrl);
             name.setText(countryInfo.getName());
             capital.setText(countryInfo.getCapital());
             code.setText(countryInfo.getAlpha2Code());
@@ -226,5 +225,6 @@ public class CountryDetails extends AppCompatActivity {
         public void setArea(double area) {
             this.area = area;
         }
+
     }
 }
